@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover the Benefits of Walking</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f9f4; /* Fundal verde pal */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 20px;
+        }
+        main {
+            padding: 20px;
+        }
+        h2 {
+            color: #4caf50;
+        }
+        .motivation {
+            margin: 40px 0;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+        .quote {
+            margin: 15px 0;
+            color: #555;
+        }
+        .quote strong {
+            color: #4caf50;
+        }
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7 coloane pentru zilele săptămânii */
+            gap: 10px;
+            justify-items: center;
+            margin: 40px 0;
+        }
+        .day {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .day:hover {
+            background-color: #4caf50;
+            color: #fff;
+        }
+        #step-history {
+            margin-top: 20px;
+        }
+        #step-history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #step-history li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 5px 0;
+            padding: 10px;
+        }
+        .reset-btn {
+            background-color: #f44336;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .reset-btn:hover {
+            background-color: #d32f2f;
+        }
+        .summary {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+        select {
+            font-size: 16px;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .motivation {
+            margin-bottom: 40px;
+        }
+
+        /* Stiluri pentru secțiunile de feedback și sugestii */
+        .feedback-section, .suggestions-section {
+            background-color: #e7f5e3;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 40px 0;
+        }
+        .feedback-section h2, .suggestions-section h2 {
+            color: #4caf50;
+        }
+        .form-input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Discover the Benefits of Walking</h1>
+    </header>
+    <main>
+        <section class="motivation">
+            <p class="quote"><strong>"Walking is the best possible exercise. Habituate yourself to walk very far." - Thomas Jefferson</strong></p>
+            <p class="quote"><strong>"An early-morning walk is a blessing for the whole day." - Henry David Thoreau</strong></p>
+            <p class="quote"><strong>"The journey of a thousand miles begins with one step." - Lao Tzu</strong></p>
+            <p class="quote"><strong>"Walking brings me back to myself." - Laurette Mortimer</strong></p>
+            <p class="quote"><strong>"A walk in nature walks the soul back home." - Mary Davis</strong></p>
+        </section>
+
+        <section>
+            <h2>Your Step Tracking Calendar</h2>
+            <label for="month-select">Choose a month:</label>
+            <select id="month-select">
+                <option value="0">January</option>
+                <option value="1">February</option>
+                <option value="2">March</option>
+                <option value="3">April</option>
+                <option value="4">May</option>
+                <option value="5">June</option>
+                <option value="6">July</option>
+                <option value="7">August</option>
+                <option value="8">September</option>
+                <option value="9">October</option>
+                <option value="10">November</option>
+                <option value="11">December</option>
+            </select>
+            <div id="calendar-days"></div>
+            <button class="reset-btn" id="reset-btn">Reset Data</button>
+            <div id="summary"></div>
+        </section>
+
+        <section id="step-history">
+            <h2>Step History</h2>
+            <ul id="history-list"></ul>
+        </section>
+
+        <!-- Feedback Section -->
+        <section class="feedback-section">
+            <h2>Feedback</h2>
+            <p>Your opinion matters to us! Please share your feedback about our website.</p>
+            <textarea class="form-input" id="feedback" placeholder="Write your feedback here..." rows="4"></textarea><br>
+            <button class="form-button" id="submit-feedback">Submit Feedback</button>
+        </section>
+
+        <!-- Suggestions Section -->
+        <section class="suggestions-section">
+            <h2>Suggestions for Improvement</h2>
+            <p>If you have any suggestions to improve our website, feel free to let us know!</p>
+            <textarea class="form-input" id="suggestions" placeholder="Write your suggestions here..." rows="4"></textarea><br>
+            <button class="form-button" id="submit-suggestions">Submit Suggestions</button>
+        </section>
+    </main>
+
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        emailjs.init("Mihut"); // Folosește userID-ul tău
+
+        // Funcționalitate pentru Feedback și Sugestii
+        document.getElementById('submit-feedback').addEventListener('click', function() {
+            const feedback = document.getElementById('feedback').value;
+            if (feedback.trim() !== '') {
+                const templateParams = {
+                    to_email: 'mihutsites@gmail.com',
+                    subject: 'Website Feedback',
+                    message: feedback
+                };
+
+                emailjs.send('service_5iubj8h', 'template_feedback', templateParams)
+                    .then(function(response) {
+                        alert("Thank you for your feedback!");
+                        document.getElementById('feedback').value = ''; // Reset feedback field
+                    }, function(error) {
+                        alert("Failed to send feedback. Please try again.");
+                    });
+            } else {
+                alert("Please enter your feedback before submitting.");
+            }
+        });
+
+        document.getElementById('submit-suggestions').addEventListener('click', function() {
+            const suggestions = document.getElementById('suggestions').value;
+            if (suggestions.trim() !== '') {
+                const templateParams = {
+                    to_email: 'mihutsites@gmail.com',
+                    subject: 'Website Suggestions',
+                    message: suggestions
+                };
+
+                emailjs.send('service_5iubj8h', 'template_suggestions', templateParams)
+                    .then(function(response) {
+                        alert("Thank you for your suggestions!");
+                        document.getElementById('suggestions').value = ''; // Reset suggestions field
+                    }, function(error) {
+                        alert("Failed to send suggestions. Please try again.");
+
